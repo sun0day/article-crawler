@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "noImplicitAny": true,
+    "module": "Commonjs", 
+    "target": "es5", 
+    "strict": true, 
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true, 
+    "moduleResolution": "Node",
+    "baseUrl": "./",
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "lib": ["ES2018"]
+  },
+  "include": ["task/**/*", "lib/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

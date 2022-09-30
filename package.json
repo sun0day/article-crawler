@@ -1,0 +1,31 @@
+{
+  "name": "article-crawler",
+  "version": "1.0.0",
+  "description": "A cli to crawl article",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sun0day/article-crawler.git"
+  },
+  "keywords": [
+    "cli",
+    "article",
+    "crawler"
+  ],
+  "author": "sun0day",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sun0day/article-crawler/issues"
+  },
+  "homepage": "https://github.com/sun0day/article-crawler#readme",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "puppeteer": "^18.0.5"
+  }
+}
