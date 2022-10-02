@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <title>Article Searcher</title>
+    <style>
+      li {
+        list-style: none;
+      }
+      a {
+        text-decoration-line: none;
+      }
+      code {
+        font-size: 16px;
+      }
+
+      #article-list {
+        width: 700px;
+        margin-top: 40px;
+        padding-left: 60px;
+      }
+
+      #article-list li p {
+        margin-bottom: 0;
+      }
+
+      #article-list .section {
+        margin-bottom: 30px;
+      }
+
+      #article-list .title {
+        display: block;
+        font-size: 18px;
+      }
+
+      #article-list .desc {
+        margin: 0;
+      }
+
+      #article-list .desc a {
+        font-style: italic;
+        opacity: 0.85;
+      }
+
+      #article-list .author {
+        font-size: 14px;
+        color: #a0a0a0;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="article-list"></ul>
+    <script>
+      window.articles = <%- JSON.stringify(articles.reduce((acc, item) => acc.concat(item), [])) %>;
+    </script>
+
+    <script>
+      function renderArticles(node, articles) {
+        const frag = document.createDocumentFragment();
+        let firstHtml = true;
+        articles.forEach((a) => {
+          const li = document.createElement("li");
+          li.innerHTML = a.html
+            ? `<p>${a.html}</p>`
+            : `<a target="_blank" href="${a.link}" class="title">${
+                a.title
+              }</a><p class="desc">${a.desc || ""}</p><span class="author">${
+                a.author
+              }</span>`;
+          if (firstHtml && a.html) {
+            li.innerHTML = "<h3>Misc</h3>" + li.innerHTML;
+            firstHtml = false;
+          }
+
+          li.className = a.html ? "" : "section";
+
+          frag.appendChild(li);
+        });
+        node.appendChild(frag);
+      }
+
+      renderArticles(document.getElementById("article-list"), window.articles);
+    </script>
+  </body>
+</html>

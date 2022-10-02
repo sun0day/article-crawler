@@ -1,6 +1,8 @@
 import { Page } from "puppeteer";
-import { Article, ArticleSource } from "../../types";
-export const jwTask = async (page: Page) => {
+import { Article, ArticleSource, Lang } from "../../types";
+// html.replace(/((class|style)="[^"]+")|/g, "");
+
+export const jwCrawler = async (page: Page) => {
   await page.goto("https://javascriptweekly.com/latest");
   const articles = await Promise.all([
     page.$$eval(".el-item", (els) => {
@@ -13,8 +15,9 @@ export const jwTask = async (page: Page) => {
           link: titleNode.href,
           author: authorNode.innerHTML.replace(/<.+$/, "").trim(" "),
           desc: descNode.innerHTML
-            .replace(/<[^>]+>/g, "")
-            .replace(/^.+(-|—)\s*/, ""),
+            .replace(/((class|style)="[^"]+")|/g, "")
+            .replace(/<span.+<\/span>/, "")
+            .replace(/^.+—\s*/, ""),
         } as Article;
       });
     }),
@@ -36,21 +39,20 @@ export const jwTask = async (page: Page) => {
         .map(
           (html) =>
             ({
-              html: html.replace(
-                /((class|style)="[^"]+")|(\<br\>)|(\n)|(↳ )/g,
-                ""
-              ),
-              tags: ["others"],
+              html: html
+                .replace(/((class|style)="[^"]+")|/g, "")
+                .replace(/<br>\n↳/g, " – "),
+              tags: ["misc"],
             } as Article)
         );
     }),
   ]);
-  console.log(
-    articles
-      .reduce((acc, item) => acc.concat(item), [] as Article[])
-      .map((article) => ({
-        ...article,
-        tags: [ArticleSource.JavascriptWeekly, ...(article.tags || [])],
-      }))
-  );
+
+  return articles
+    .reduce((acc, item) => acc.concat(item), [] as Article[])
+    .map((article) => ({
+      ...article,
+      lang: Lang.Javascript,
+      tags: [ArticleSource.JavascriptWeekly, ...(article.tags || [])],
+    }));
 };

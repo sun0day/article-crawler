@@ -10,8 +10,9 @@ export class Crawler {
   }
 
   async run(tasks: ((page: Page) => any)[]) {
-    await Promise.all(tasks.map((task) => task(this.page)));
+    return Promise.all(tasks.map((crawler) => crawler(this.page)));
   }
+
   async close() {
     await this.page.screenshot({ path: "xxxx.png" });
     return this.browser.close();
